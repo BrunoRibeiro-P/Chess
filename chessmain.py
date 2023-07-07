@@ -1,13 +1,63 @@
 import pygame as p
-from Chess import ChessEngine
+import chessengine
 
 ALTURA = LARGURA = 512
 DIMENSAO = 8
-QUADRADO_TAMANHO = ALTURA // LARGURA
+QUADRADO_TAMANHO = ALTURA // DIMENSAO
 MAX_FPS = 15
 IMAGENS = {}
 
 def CarregarImagens():
-    IMAGENS[]
- 
+    pecas = ["wR","wN","wB","wQ","wK","wp","bR","bN","bB","bQ","bK","bp"]
+    for peca in pecas:
+        IMAGENS[peca] = p.transform.scale(p.image.load("images/" + peca + ".png"), (QUADRADO_TAMANHO, QUADRADO_TAMANHO))
 
+def main():
+    p.init()
+    screen = p.display.set_mode((ALTURA, LARGURA))
+    clock = p.time.Clock()
+    screen.fill(p.Color("white"))
+    gs = chessengine.EstadoJogo()
+    CarregarImagens()
+    running = True
+    while running:
+        for e in p.event.get():
+            if e.type == p.QUIT:
+                running = False
+        drawGameState(screen, gs)
+        clock.tick(MAX_FPS)
+        p.display.flip()
+
+def drawGameState(screen, gs):
+    drawboard(screen)
+    drawPieces(screen ,gs.tabuleiro)
+              
+def drawboard(screen):
+    larg = 0
+    altu = 0
+    for horizontal in range(9):
+        if horizontal % 2 == 0:
+            for vertical in range(8):
+                if vertical % 2 == 0:
+                    p.draw.rect(screen, (190,190,190), (larg, altu, 64, 64))
+                else:
+                    p.draw.rect(screen, (255,255,255), (larg, altu, 64, 64))
+                larg = 64*vertical
+        else:
+            for vertical in range(8):
+                if vertical % 2 != 0:
+                    p.draw.rect(screen, (190,190,190), (larg, altu, 64, 64))
+                else:
+                    p.draw.rect(screen, (255,255,255), (larg, altu, 64, 64))
+                larg = 64*vertical
+        altu = 64*horizontal
+
+def drawPieces(screen, board):
+    for r in range(DIMENSAO):
+        for c in range(DIMENSAO):
+            peca = board[r][c]
+            if peca != '--':
+                screen.blit(IMAGENS[peca], p.Rect(c*QUADRADO_TAMANHO, r*QUADRADO_TAMANHO, QUADRADO_TAMANHO, QUADRADO_TAMANHO))
+
+if __name__ == "__main__":
+    main()
