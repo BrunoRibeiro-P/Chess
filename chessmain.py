@@ -20,10 +20,29 @@ def main():
     gs = chessengine.EstadoJogo()
     CarregarImagens()
     running = True
+    sqSelected = ()
+    playerClicks = []
     while running:
         for e in p.event.get():
             if e.type == p.QUIT:
-                running = False
+                running = False 
+            elif e.type == p.MOUSEBUTTONDOWN:
+                location = p.mouse.get_pos()
+                col = location[0]//QUADRADO_TAMANHO
+                row = location[1]//QUADRADO_TAMANHO
+                if sqSelected == (row, col):
+                    sqSelected = ()
+                    playerClicks = []
+                else:
+                    sqSelected = (row, col)
+                    playerClicks.append(sqSelected)
+                if len(playerClicks) == 2:
+                    move = chessengine.Move(playerClicks[0], playerClicks[1], gs.tabuleiro)
+                    print(move.getChessNotation())
+                    gs.makeMovie(move)
+                    sqSelected = ()
+                    playerClicks = []
+
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()
