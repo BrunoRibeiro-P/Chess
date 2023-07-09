@@ -15,9 +15,16 @@ class EstadoJogo():
 
     def makeMovie(self, move):
         self.tabuleiro[move.startRow][move.startCol] = '--'
-        self.tabuleiro[move.endRow][move.endRow] = move.pieceMoved
+        self.tabuleiro[move.endRow][move.endCol] = move.pieceMoved
         self.registroDeMovimentos.append(move)
         self.movimentoDasBrancas = not self.movimentoDasBrancas
+
+    def undoMovie(self):
+        if len(self.registroDeMovimentos) != 0:
+            self.tabuleiro[self.registroDeMovimentos[-1].startRow][self.registroDeMovimentos[-1].startCol] = self.registroDeMovimentos[-1].pieceMoved
+            self.tabuleiro[self.registroDeMovimentos[-1].endRow][self.registroDeMovimentos[-1].endCol] = self.registroDeMovimentos[-1].pieceCaptured
+            self.registroDeMovimentos.pop()
+            self.movimentoDasBrancas = not self.movimentoDasBrancas
     
 class Move():
 

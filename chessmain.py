@@ -1,5 +1,6 @@
 import pygame as p
 import chessengine
+import time
 
 ALTURA = LARGURA = 512
 DIMENSAO = 8
@@ -39,10 +40,12 @@ def main():
                 if len(playerClicks) == 2:
                     move = chessengine.Move(playerClicks[0], playerClicks[1], gs.tabuleiro)
                     print(move.getChessNotation())
-                    gs.makeMovie(move)
                     sqSelected = ()
+                    gs.makeMovie(move)
                     playerClicks = []
-
+            elif e.type == p.KEYDOWN:
+                if e.key == p.K_z:
+                    gs.undoMovie()
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()
