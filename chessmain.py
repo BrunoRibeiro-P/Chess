@@ -19,10 +19,14 @@ def main():
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     gs = chessengine.EstadoJogo()
+    validMoves = gs.getValidMoves()
+    moveMade = False
+
     CarregarImagens()
     running = True
     sqSelected = ()
     playerClicks = []
+
     while running:
         for e in p.event.get():
             if e.type == p.QUIT:
@@ -41,11 +45,18 @@ def main():
                     move = chessengine.Move(playerClicks[0], playerClicks[1], gs.tabuleiro)
                     print(move.getChessNotation())
                     sqSelected = ()
-                    gs.makeMovie(move)
+                    if move in validMoves:
+                        gs.makeMovie(move)
+                        moveMade = True 
                     playerClicks = []
             elif e.type == p.KEYDOWN:
                 if e.key == p.K_z:
                     gs.undoMovie()
+                    moveMade = True
+        if moveMade:
+            validMoves = gs.getValidMoves()
+            moveMade = False
+
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()
