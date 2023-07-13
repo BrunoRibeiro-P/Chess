@@ -43,7 +43,9 @@ class EstadoJogo():
         return moves
     
     def getPawnMoves(self, r, c , moves):
-        pass
+        if self.movimentoDasBrancas:
+            if self.tabuleiro[r-1][c] == '--':
+                move.append((r,c),(r-1, c), self.tabuleiro)
 
     def getRookMoves(self, r, c, moves):
         pass
@@ -68,7 +70,7 @@ class Move():
     def getChessNotation(self):
         return self.getRankFile(self.startRow, self.startCol) + self.getRankFile(self.endRow, self.endCol)
     
-    def __eq_(self, other):
+    def __eq__(self, other):
         if isinstance(other, Move):
             return self.moveID == other.moveID
         return False
