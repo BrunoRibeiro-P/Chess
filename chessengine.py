@@ -34,7 +34,7 @@ class EstadoJogo():
         for r in range(len(self.tabuleiro)):
             for c in range(len(self.tabuleiro[r])):
                 turn = self.tabuleiro[r][c][0]
-                if (turn == 'w' and self.movimentoDasBrancas) and (turn == 'b' and not self.movimentoDasBrancas):
+                if (turn == 'w' and self.movimentoDasBrancas) or (turn == 'b' and not self.movimentoDasBrancas):
                     piece = self.tabuleiro[r][c][1]
                     if piece == 'p':
                         self.getPawnMoves(r, c, moves)
@@ -45,7 +45,16 @@ class EstadoJogo():
     def getPawnMoves(self, r, c , moves):
         if self.movimentoDasBrancas:
             if self.tabuleiro[r-1][c] == '--':
-                move.append((r,c),(r-1, c), self.tabuleiro)
+                moves.append(Move((r,c),(r-1, c), self.tabuleiro))
+                if r == 6 and self.tabuleiro[r-2][c] == '--':
+                    moves.append(Move((r,c), (r-2, c), self.tabuleiro))
+            if c-1 >= 0:
+                if self.tabuleiro[r-1][c-1][0] == 'b':
+                    moves.append(Move((r,c-1),(r-1, c-1), self.tabuleiro))
+            if c+1 <= 7:
+                if self.tabuleiro[r-1][c+1][0] == 'b':
+                    moves.append(Move((r, c+1), (r-1, c+1), self.tabuleiro))
+    
 
     def getRookMoves(self, r, c, moves):
         pass

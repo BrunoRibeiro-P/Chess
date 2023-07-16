@@ -1,6 +1,5 @@
 import pygame as p
 import chessengine
-import time
 
 ALTURA = LARGURA = 512
 DIMENSAO = 8
