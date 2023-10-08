@@ -27,8 +27,8 @@ def main():
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     gs = chessengine.EstadoJogo()
-    validMoves = gs.getValidMoves()
-    moveMade = False
+    #validMoves = gs.getValidMoves()
+   # moveMade = False
 
     CarregarImagens()
     running = True
@@ -41,29 +41,31 @@ def main():
                 running = False 
             elif e.type == p.MOUSEBUTTONDOWN:
                 location = p.mouse.get_pos()
-                col = location[0]//QUADRADO_TAMANHO
-                row = location[1]//QUADRADO_TAMANHO
+                print(location)
+                col = location[0]//25
+                row = location[1]//25
+                print(col, row)
                 if sqSelected == (row, col):
-                    sqSelected = ()
-                    playerClicks = []
+                     sqSelected = ()
+                     playerClicks = []
                 else:
                     sqSelected = (row, col)
                     playerClicks.append(sqSelected)
                 if len(playerClicks) == 2:
                     move = chessengine.Move(playerClicks[0], playerClicks[1], gs.board)
                     print(move.getChessNotation())
-                    sqSelected = ()
-                    if move in validMoves:
-                        gs.makeMovie(move)
-                        moveMade = True 
-                    playerClicks = []
+                    # sqSelected = ()
+                    # if move in validMoves:
+                    #     gs.makeMovie(move)
+                    #     moveMade = True 
+                    # playerClicks = []
             elif e.type == p.KEYDOWN:
                 if e.key == p.K_z:
                     gs.undoMovie()
                     moveMade = True
-        if moveMade:
-            validMoves = gs.getValidMoves()
-            moveMade = False
+        # if moveMade:
+        #     validMoves = gs.getValidMoves()
+        #     moveMade = False
 
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
@@ -79,8 +81,6 @@ def drawboard(screen):
     for horizontal in range(25):
         if horizontal % 2 == 0:
             for vertical in range(25):
-                #altura 50
-                #largura 29
                 if vertical % 2 == 0:
                     p.draw.rect(screen, (190,190,190), (larg, altu, QUADRADO_TAMANHO, QUADRADO_TAMANHO))
                 else:
@@ -93,13 +93,10 @@ def drawboard(screen):
                 else:
                     p.draw.rect(screen, (255,255,255), (larg, altu, QUADRADO_TAMANHO, QUADRADO_TAMANHO))
                 larg = 29*vertical
-        ponto_inicial = (0, 233)
-        ponto_final = (700, 233)
-        largura_linha = 4
-        p.draw.line(screen, (0,0,0), (0, 233), (700, 233), largura_linha)
-        p.draw.line(screen, (0,0,0), (0, 466), (700, 466), largura_linha)
-        p.draw.line(screen, (0,0,0), (233, 0), (233, 700), largura_linha)
-        p.draw.line(screen, (0,0,0), (466, 0), (466, 700), largura_linha)
+        p.draw.line(screen, (0,0,0), (0, 233), (700, 233), 4)
+        p.draw.line(screen, (0,0,0), (0, 466), (700, 466), 4)
+        p.draw.line(screen, (0,0,0), (233, 0), (233, 700), 4)
+        p.draw.line(screen, (0,0,0), (466, 0), (466, 700), 4)
 
         altu = 29*horizontal
 
