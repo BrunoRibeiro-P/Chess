@@ -1,28 +1,33 @@
 class EstadoJogo():
     def __init__(self):
-        self.tabuleiro = [
-            ["bR","bN","bB","bQ","bK","bB","bN","bR"],
-            ["bp","bp","bp","bp","bp","bp","bp","bp"],
-            ["--","--","--","--","--","--","--","--"],
-            ["--","--","--","--","--","--","--","--"],
-            ["--","--","--","--","--","--","--","--"],
-            ["--","--","--","--","--","--","--","--"],
-            ["wp","wp","wp","wp","wp","wp","wp","wp"],
-            ["wR","wN","wB","wQ","wK","wB","wN","wR"],
-        ]
+        #screens : 1,2,3,4,5,6,7,8,9
+        #nB: number of the board
+        self.board = []
+        boards = 9
+        for nB in range(boards):
+            self.board.append([
+                [f"{nB}bR",f"{nB}bN",f"{nB}bB",f"{nB}bQ",f"{nB}bK",f"{nB}bB",f"{nB}bN",f"{nB}bR"],
+                [f"{nB}bp",f"{nB}bp",f"{nB}bp",f"{nB}bp",f"{nB}bp",f"{nB}bp",f"{nB}bp",f"{nB}bp"],
+                [f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--"],
+                [f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--"],
+                [f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--"],
+                [f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--",f"{nB}--"],
+                [f"{nB}wp",f"{nB}wp",f"{nB}wp",f"{nB}wp",f"{nB}wp",f"{nB}wp",f"{nB}wp",f"{nB}wp"],
+                [f"{nB}wR",f"{nB}wN",f"{nB}wB",f"{nB}wQ",f"{nB}wK",f"{nB}wB",f"{nB}wN",f"{nB}wR"],
+            ])
         self.movimentoDasBrancas = True
         self.registroDeMovimentos = []
 
     def makeMovie(self, move):
-        self.tabuleiro[move.startRow][move.startCol] = '--'
-        self.tabuleiro[move.endRow][move.endCol] = move.pieceMoved
+        self.board[move.startRow][move.startCol] = '--'
+        self.board[move.endRow][move.endCol] = move.pieceMoved
         self.registroDeMovimentos.append(move)
         self.movimentoDasBrancas = not self.movimentoDasBrancas
 
     def undoMovie(self):
         if len(self.registroDeMovimentos) != 0:
-            self.tabuleiro[self.registroDeMovimentos[-1].startRow][self.registroDeMovimentos[-1].startCol] = self.registroDeMovimentos[-1].pieceMoved
-            self.tabuleiro[self.registroDeMovimentos[-1].endRow][self.registroDeMovimentos[-1].endCol] = self.registroDeMovimentos[-1].pieceCaptured
+            self.board[self.registroDeMovimentos[-1].startRow][self.registroDeMovimentos[-1].startCol] = self.registroDeMovimentos[-1].pieceMoved
+            self.board[self.registroDeMovimentos[-1].endRow][self.registroDeMovimentos[-1].endCol] = self.registroDeMovimentos[-1].pieceCaptured
             self.registroDeMovimentos.pop()
             self.movimentoDasBrancas = not self.movimentoDasBrancas
 
@@ -30,12 +35,12 @@ class EstadoJogo():
         return self.getAllPossibleMoves()
 
     def getAllPossibleMoves(self):
-        moves = [Move((6,4), (4,4), self.tabuleiro)]
-        for r in range(len(self.tabuleiro)):
-            for c in range(len(self.tabuleiro[r])):
-                turn = self.tabuleiro[r][c][0]
+        moves = [Move((6,4), (4,4), self.board)]
+        for r in range(len(self.board)):
+            for c in range(len(self.board[r])):
+                turn = self.board[r][c][0]
                 if (turn == 'w' and self.movimentoDasBrancas) or (turn == 'b' and not self.movimentoDasBrancas):
-                    piece = self.tabuleiro[r][c][1]
+                    piece = self.board[r][c][1]
                     if piece == 'p':
                         self.getPawnMoves(r, c, moves)
                     elif piece == 'R':
@@ -44,16 +49,16 @@ class EstadoJogo():
     
     def getPawnMoves(self, r, c , moves):
         if self.movimentoDasBrancas:
-            if self.tabuleiro[r-1][c] == '--':
-                moves.append(Move((r,c),(r-1, c), self.tabuleiro))
-                if r == 6 and self.tabuleiro[r-2][c] == '--':
-                    moves.append(Move((r,c), (r-2, c), self.tabuleiro))
+            if self.board[r-1][c] == '--':
+                moves.append(Move((r,c),(r-1, c), self.board))
+                if r == 6 and self.board[r-2][c] == '--':
+                    moves.append(Move((r,c), (r-2, c), self.board))
             if c-1 >= 0:
-                if self.tabuleiro[r-1][c-1][0] == 'b':
-                    moves.append(Move((r,c-1),(r-1, c-1), self.tabuleiro))
+                if self.board[r-1][c-1][0] == 'b':
+                    moves.append(Move((r,c-1),(r-1, c-1), self.board))
             if c+1 <= 7:
-                if self.tabuleiro[r-1][c+1][0] == 'b':
-                    moves.append(Move((r, c+1), (r-1, c+1), self.tabuleiro))
+                if self.board[r-1][c+1][0] == 'b':
+                    moves.append(Move((r, c+1), (r-1, c+1), self.board))
     
 
     def getRookMoves(self, r, c, moves):
