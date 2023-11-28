@@ -19,8 +19,8 @@ class EstadoJogo():
         self.registroDeMovimentos = []
 
     def makeMovie(self, move):
-        self.board[move.startRow][move.startCol] = '--'
-        self.board[move.endRow][move.endCol] = move.pieceMoved
+        self.board[move.quadrante][move.startRow][move.startCol] = '--'
+        self.board[move.quadrante][move.endRow][move.endCol] = move.pieceMoved
         self.registroDeMovimentos.append(move)
         self.movimentoDasBrancas = not self.movimentoDasBrancas
 
@@ -71,23 +71,29 @@ class Move():
     rowToRanks = {v: k for k, v in ranksToRows.items()}
     filesToCols = {"a":0, "b":1, "c":2,"d":3,"e":4,"f":5,"g":6, 'h':7}
     colsToFiles = {v:k for k, v in filesToCols.items()}
+    filesToQuadrant = {"screen1":0, "screen2":1, "screen3":2,"screen4":3,"screen5":4,"screen6":5,"screen7":6, 'screen8':7, 'screen9':8}
+    quadToFiles = {v:k for k, v in filesToQuadrant.items()}
 
     def __init__(self, startSq, endSq, board):
         self.startRow = startSq[0]
         self.startCol = startSq[1]
+        self.quadrante = startSq[2]
         self.endRow = endSq[0]
         self.endCol = endSq[1]
-        self.pieceMoved = board[self.startRow][self.startCol]
-        self.pieceCaptured = board[self.endRow][self.endCol]
+      #  print(self.quadrante)
+        print('ali',self.startRow)
+        # print(board[self.quadrante][self.startRow][self.startCol])
+        # self.pieceMoved = board[self.quadrante][self.startRow][self.startCol]
+        # self.pieceCaptured = board[self.quadrante][self.endRow][self.endCol]
         #self.moveID = self.startRow * 1000 + self.startCol * 100 + self.endRow + 10 *self.endCol
 
     def getChessNotation(self):
-        return self.getRankFile(self.startRow, self.startCol) + self.getRankFile(self.endRow, self.endCol)
+        return self.getRankFile(self.quadrante, self.startRow, self.startCol) + self.getRankFile(self.quadrante,self.endRow, self.endCol)
     
     # def __eq__(self, other):
     #     if isinstance(other, Move):
     #         return self.moveID == other.moveID
     #     return False
 
-    def getRankFile(self, r, c):
-        return self.colsToFiles[c] + self.rowToRanks[r]
+    def getRankFile(self, r, c, q):
+        return self.colsToFiles[c] + self.rowToRanks[r] + self.quadToFiles[q]

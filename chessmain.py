@@ -1,13 +1,15 @@
 import pygame as p
 import chessengine
 
-ALTURA = 700
+ALTURA = 690
 LARGURA = 700
 DIMENSAO = 15
 QUADRADO_TAMANHO = ALTURA // DIMENSAO
 MAX_FPS = 15
 IMAGENS = {}
 line = []
+QUADRANTE = 0
+
 for num in range(8):
     line.append(f'{num}--')
 
@@ -41,28 +43,46 @@ def main():
                 running = False 
             elif e.type == p.MOUSEBUTTONDOWN:
                 location = p.mouse.get_pos()
-                print(location)
                 col = location[0]//25
                 row = location[1]//25
-                print(col, row)
                 if sqSelected == (row, col):
                      sqSelected = ()
                      playerClicks = []
                 else:
-                    sqSelected = (row, col)
+                    if int(row / 8) == 0 and int(col / 8) == 0:
+                         QUADRANTE = 0
+                    elif int(row / 8) == 0 and int(col / 8) == 1:
+                         QUADRANTE = 1 
+                    elif int(row / 8) == 0 and int(col / 8) == 2:
+                         QUADRANTE = 2
+                    elif int(row / 8) == 1 and int(col / 8) == 0:
+                         QUADRANTE = 3
+                    elif int(row / 8) == 1 and int(col / 8) == 1:
+                         QUADRANTE = 4
+                    elif int(row / 8) == 1 and int(col / 8) == 2:
+                         QUADRANTE = 5
+                    elif int(row / 8) == 2 and int(col / 8) == 0:
+                         QUADRANTE = 6
+                    elif int(row / 8) == 2 and int(col / 8) == 1:
+                         QUADRANTE = 7
+                    elif int(row / 8) == 2 and int(col / 8) == 2:
+                         QUADRANTE = 8
+                    sqSelected = (row, col, QUADRANTE)
                     playerClicks.append(sqSelected)
-                if len(playerClicks) == 2:
-                    move = chessengine.Move(playerClicks[0], playerClicks[1], gs.board)
-                    print(move.getChessNotation())
-                    # sqSelected = ()
-                    # if move in validMoves:
-                    #     gs.makeMovie(move)
-                    #     moveMade = True 
-                    # playerClicks = []
-            elif e.type == p.KEYDOWN:
-                if e.key == p.K_z:
-                    gs.undoMovie()
-                    moveMade = True
+            if len(playerClicks) == 2:
+                print('aqui',row)
+                move = chessengine.Move(playerClicks[0], playerClicks[1], gs.board)
+                #print(move.getChessNotation())
+                sqSelected = ()
+                playerClicks = []
+            #     if move in validMoves:
+            #        gs.makeMovie(move)
+            #        moveMade = True 
+            #     playerClicks = []
+            # elif e.type == p.KEYDOWN:
+            #     if e.key == p.K_z:
+            #         gs.undoMovie()
+            #         moveMade = True
         # if moveMade:
         #     validMoves = gs.getValidMoves()
         #     moveMade = False
