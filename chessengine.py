@@ -19,7 +19,7 @@ class EstadoJogo():
         self.registroDeMovimentos = []
 
     def makeMovie(self, move):
-        self.board[move.quadrante][move.startRow][move.startCol] = '--'
+        self.board[move.quadrante][move.startRow][move.startCol] = f'{move.quadrante}--'
         self.board[move.quadrante][move.endRow][move.endCol] = move.pieceMoved
         self.registroDeMovimentos.append(move)
         self.movimentoDasBrancas = not self.movimentoDasBrancas
@@ -82,9 +82,10 @@ class Move():
         self.endCol = endSq[1]
       #  print(self.quadrante)
         print('ali',self.startRow)
-        # print(board[self.quadrante][self.startRow][self.startCol])
-        # self.pieceMoved = board[self.quadrante][self.startRow][self.startCol]
-        # self.pieceCaptured = board[self.quadrante][self.endRow][self.endCol]
+        print(board[self.quadrante][self.startRow][self.startCol])
+        self.pieceMoved = board[self.quadrante][self.startRow][self.startCol]
+        print(board[self.quadrante][self.endRow][self.endCol])
+        self.pieceCaptured = board[self.quadrante][self.endRow][self.endCol]
         #self.moveID = self.startRow * 1000 + self.startCol * 100 + self.endRow + 10 *self.endCol
 
     def getChessNotation(self):

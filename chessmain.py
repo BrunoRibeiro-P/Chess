@@ -71,9 +71,12 @@ def main():
                     playerClicks.append(sqSelected)
             if len(playerClicks) == 2:
                 print('aqui',row)
+                print(playerClicks[0])
                 move = chessengine.Move(playerClicks[0], playerClicks[1], gs.board)
-                #print(move.getChessNotation())
+                #move.getChessNotation()
                 sqSelected = ()
+                gs.makeMovie(move)
+                print(gs.board)
                 playerClicks = []
             #     if move in validMoves:
             #        gs.makeMovie(move)
