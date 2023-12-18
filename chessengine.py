@@ -80,11 +80,11 @@ class Move():
         self.quadrante = startSq[2]
         self.endRow = endSq[0]
         self.endCol = endSq[1]
-      #  print(self.quadrante)
-        print('ali',self.startRow)
-        print(board[self.quadrante][self.startRow][self.startCol])
+        print('here')
+        print(self.quadrante)
+        print(self.endRow)
+        print(self.endCol)
         self.pieceMoved = board[self.quadrante][self.startRow][self.startCol]
-        print(board[self.quadrante][self.endRow][self.endCol])
         self.pieceCaptured = board[self.quadrante][self.endRow][self.endCol]
         #self.moveID = self.startRow * 1000 + self.startCol * 100 + self.endRow + 10 *self.endCol
 
